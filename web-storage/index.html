@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <style>
+    body {
+      font: 18px 'Helvetica Neue',Helvetica,'Lucida Grande','Luxi Sans',Arial,'PingFang SC','Hiragino Sans GB',STHeiti,'Microsoft YaHei','Wenquanyi Micro Hei','WenQuanYi Micro Hei Mono','WenQuanYi Zen Hei','WenQuanYi Zen Hei Mono',LiGothicMed;
+          text-rendering: optimizeLegibility;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+    }
+  </style>
+</head>
+<body>
+  <form action="post">
+      <input type="text" id="username" value="demo_admin">
+      <input type="text" id="pwd">
+      <input type="submit" value="submit">
+  </form>
+
+  <script src="./node_modules/jquery/dist/jquery.js"></script>
+  <script src="./node_modules/js-cookie/src/js.cookie.js"></script>
+  <script>
+    var username = Cookies.get('username');
+    if (username) {
+      document.querySelector('#username').value = username;
+    }
+
+    $('form').on('submit', function(e) {
+      e.preventDefault();
+      Cookie.set('username', $('#username').val());
+    });
+  </script>
+</body>
+</html>

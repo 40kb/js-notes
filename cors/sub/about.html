@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <ul>
+    <li>Google</li>
+    <li>Github</li>
+  </ul>
+
+  <script>
+    // 尝试从子窗口去获取父窗口的 DOM
+    // 因为同源策略的原因，也是会报错的
+    // document.getElementById('parent').contentWindow.document
+
+
+    // 这种情景下父窗口-子窗口如何通讯?
+
+    // ##片段识别符（fragment identifier） -- Why!?
+    window.onhashchange = function checkMessage() {
+      var msg = window.location.hash;
+      alert(msg)
+    }
+
+    // 从子窗口也可以改变父窗口的 fragment identifier
+    // setTimeout(function() {
+    //   parent.location.href = 'https://bank-static-stg.pingan.com.cn/bbc/test/sdk.html' + '#' + encodeURIComponent('{sum: 1}')
+    // }, 4000)
+
+
+
+    // ==第二种==
+    // 同窗口内通过 window.name (跳转链接时候不打开新的浏览器窗口/tab的情况)
+
+    // 访问前一个页面写入 window.name 的数据
+    // setTimeout(function() {
+    //   console.log(window.name)
+    // }, 3000)
+
+
+
+    // ==第三种==
+    window.addEventListener('message', function(event) {
+      console.log(event)
+    }, false)
+
+  </script>
+</body>
+</html>

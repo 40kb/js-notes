@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <style>
+    body {
+      padding: 1.6em;
+    }
+
+    iframe {
+      border: 1px solid red;
+      padding: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div id="parent">
+    <ul>
+      <li>parent</li>
+    </ul>
+
+    <a href="http://localhost:8888/about.html">About Page</a>
+  </div>
+
+  <iframe id="myIframe" src="http://localhost:8888/about.html" frameborder="0" height="400" width="260"></iframe>
+
+  <script>
+    // 当前页面运行在 http://localhost:4000 ("父窗口")
+    // 使用 iframe 载入 http://localhost:8000/about.html 页面（"子窗口"）
+
+    // 尝试从父窗口去获取子窗口的 DOM
+    // 会报错！同源策略限制
+    // 同样的子窗口获取父窗口的 DOM 也会报错
+    // document.getElementById('myIFrame').contentWindow.document
+
+
+
+    // 这种情景下父窗口-子窗口如何通讯?
+
+    // ==第一种==
+    // 片段识别符（fragment identifier） -- Why!?
+    // 因为改变URL的片段标识符(fragment identifier)，页面不会重新刷新（不会发请求）
+    var originURL = 'http://localhost:8888/about.html'
+    var data = 'message'
+    var src = originURL + '#' + data
+
+    document.getElementById('myIframe').src = src
+
+
+    window.onhashchange = function hashChange() {
+      var msg = window.location.hash;
+      alert(msg)
+    }
+
+
+
+    // ==第二种==
+    // 同窗口内通过 window.name (跳转链接时候不打开新的浏览器窗口/tab的情况)
+    // 优点：window.name容量很大，可以放置非常长的字符串；
+    // 缺点：是必须监听子窗口window.name属性的变化，影响网页性能。
+    window.name = JSON.stringify({
+      name: 'iphoneX',
+      price: 8899
+    })
+
+
+
+    // ==第三种==
+    // 跨文档通信 API (Cross-document messaging)
+    const IFRAME = document.getElementById('myIframe').contentWindow
+    IFRAME.postMessage('Hello', 'http://localhost:8888')
+  </script>
+</body>
+</html>
